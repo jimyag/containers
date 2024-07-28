@@ -1,0 +1,49 @@
+name: Create and publish a Docker image
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    strategy:
+      matrix:
+        container:
+          - derper
+          - ubuntu
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Check ${{ matrix.container }} changes detected
+        run: |
+          if git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep -q "${{ matrix.container }}/"; then
+            echo "changes=true" >> $GITHUB_ENV
+          else
+            echo "changes=false" >> $GITHUB_ENV
+          fi
+          
+      - name: Build and push ${{ matrix.container }} image
+        uses: docker/build-push-action@v6
+        if: env.changes == 'true'
+        run: |
+          ./${{ matrix.container }}/build.sh
