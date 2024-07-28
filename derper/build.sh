@@ -6,10 +6,7 @@ release_tags=$(curl -s https://api.github.com/repos/tailscale/tailscale/releases
   sed -n '1,3s/.*"v\([^"]*\)".*/\1/p' | \
   sort -V)
 echo $release_tags
-docker buildx build --platform linux/amd64 \
-    --file ./derper/Dockerfile --push \
-    --tag ghcr.io/jimyag/derper:latest \
-    --target derper ./derper
+
 # Loop through each release tag and build the Docker image
 for tag in $release_tags
 do
@@ -19,3 +16,8 @@ do
     --build-arg VERSION=v$tag \
     --target derper ./derper
 done
+
+docker buildx build --platform linux/amd64 \
+    --file ./derper/Dockerfile --push \
+    --tag ghcr.io/jimyag/derper:latest \
+    --target derper ./derper
