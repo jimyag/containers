@@ -31,7 +31,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Determine changed containers
         run: |
-          echo "CHANGED_CONTAINERS=./gen_release_containers" >> $GITHUB_ENV
+          echo "CHANGED_CONTAINERS=$(./gen_release_containers.sh)" >> $GITHUB_ENV
       - name: Build and push image
         run: |
           for container in $CHANGED_CONTAINERS; do
