@@ -22,8 +22,7 @@ ENV VERIFY_CLIENT_URL=
 
 COPY --from=builder /go/bin/derper .
 
-ENTRYPOINT [ "/app/derper" ]
-CMD --hostname=$HOSTNAME \
+CMD /app/derper --hostname=$HOSTNAME \
     --certmode=$CERTMODE \
     --certdir=$CERTDIR \
     --a=$SERVER_ADDR \
