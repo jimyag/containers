@@ -16,11 +16,6 @@ jobs:
       packages: write
       attestations: write
       id-token: write
-    strategy:
-      matrix:
-        container:
-          - derper
-          - ubuntu
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -33,7 +28,14 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}          
-      - name: Build and push ${{ matrix.container }} image
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Determine changed containers
         run: |
-          ./${{ matrix.container }}/build.sh
+          echo "CHANGED_CONTAINERS=./gen_release_containers" >> $GITHUB_ENV
+      - name: Build and push image
+        run: |
+          for container in $CHANGED_CONTAINERS; do
+            ./$container/build.sh
+          done
+        env:
+          CHANGED_CONTAINERS: ${{ env.CHANGED_CONTAINERS }}
