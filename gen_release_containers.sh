@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 latest_tag=$(git describe --tags --abbrev=0 --always )
 previous_tag=$(git describe --tags --abbrev=0 $latest_tag^ 2>/dev/null)
 
