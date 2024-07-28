@@ -34,7 +34,7 @@ jobs:
       - name: Determine changed containers
         run: |
           CHANGED_CONTAINERS=$(./gen_release_containers.sh)
-          echo $CHANGED_CONTAINERS | tee -a $GITHUB_ENV
+          echo CHANGED_CONTAINERS=$CHANGED_CONTAINERS | tee -a $GITHUB_ENV
       - name: Build and push image
         run: |
           echo $CHANGED_CONTAINERS
