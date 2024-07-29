@@ -43,4 +43,4 @@ jobs:
           done
         env:
           CHANGED_CONTAINERS: ${{ env.CHANGED_CONTAINERS }}
-          static_base_url: ${{ vars.STATIC_BASE_URL }}
+          STATIC_BASE_URL: ${{ vars.STATIC_BASE_URL }}

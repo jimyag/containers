@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
+set -ex
 jdk_versions=("1.8.0_411" "1.8.0_111")
 jre_versions=("1.8.0_411" "1.8.0_111")
 
-base_url="$static_base_url"
+base_url="$STATIC_BASE_URL"
 
 for jdk_version in "${jdk_versions[@]}"; do
     dst="jdk-${jdk_version}-linux-x64.tar.gz"
