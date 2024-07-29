@@ -7,7 +7,7 @@ base_url="https://r2.jimyag.com"
 
 for jdk_version in "${jdk_versions[@]}"; do
     dst="jdk-${jdk_version}-linux-x64.tar.gz"
-    wget "$base_url/${dst}" -O "./java/${dst}"
+    wget -q "$base_url/${dst}" -O "./java/${dst}"
     tar -xzf "./java/${dst}" -C "./java"
     mv "./java/jdk${jdk_version}" "./java/java"
 
@@ -21,7 +21,7 @@ done
 
 for jre_version in "${jre_versions[@]}"; do
     dst="jre-${jre_version}-linux-x64.tar.gz"
-    wget "$base_url/${dst}" -O "./java/${dst}"
+    wget -q "$base_url/${dst}" -O "./java/${dst}"
     tar -xzf "./java/${dst}" -C "./java"
     mv "./java/jre${jre_version}" "./java/java"
 
