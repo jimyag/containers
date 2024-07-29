@@ -20,7 +20,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-            fetch-depth: 10
+            fetch-depth: 0
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -43,4 +43,4 @@ jobs:
           done
         env:
           CHANGED_CONTAINERS: ${{ env.CHANGED_CONTAINERS }}
-          static_base_url: ${{ secrets.STATIC_BASE_URL }}
+          static_base_url: ${{ vars.STATIC_BASE_URL }}
