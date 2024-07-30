@@ -8,7 +8,7 @@ if [[ -z $previous_tag ]]; then
 fi
 
 git diff --name-only "$previous_tag" "$latest_tag" |\
-    grep -v -e ".git" -e "README" -e "gen_release_containers.sh" -e "gen_tag.sh" |\
+    grep -v -e ".git" -e "README" -e "gen_release_containers.sh" -e "gen_tag.sh" -e "java" |\
     while IFS= read -r line; do
         dirname=$(dirname "$line")
         echo "$dirname"
