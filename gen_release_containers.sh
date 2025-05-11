@@ -10,7 +10,7 @@ fi
 
 git diff --name-status --diff-filter=AM "$previous_tag" "$latest_tag" |\
     awk '{print $2}' |\
-    grep -v -e ".git" -e "README" -e "gen_release_containers.sh" -e "gen_tag.sh" -e "java" |\
+    grep -v -e ".git" -e "README" -e "gen_release_containers.sh" -e "gen_tag.sh" -e "java" -e "\." |\
     while IFS= read -r line; do
         dirname=$(dirname "$line")
         echo "$dirname"
