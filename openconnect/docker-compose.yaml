@@ -3,16 +3,17 @@ services:
     image: ghcr.io/jimyag/openconnect:latest
     container_name: openconnect
     restart: always
-    privileged: true
-    environment:
-      - LDAP_USER=admin
-      - LDAP_PASSWD=123456
-      - VPN_SERVER=test.abc.com
-      - GOST_PORT=53200
+    env_file:
+      - .env
+    cap_add:
+      - NET_ADMIN
+      - MKNOD
+    devices:
+      - /dev/net/tun
     ports:
       - 53200:53200
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:53200/health"]
+      test: ["CMD", "curl", "-f", "http://xxx"]
       interval: 30s
       timeout: 10s
       retries: 3
