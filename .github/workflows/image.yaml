@@ -1,4 +1,4 @@
-name: Create and publish a Docker image
+name: Release
 
 on:
   push:
@@ -12,13 +12,13 @@ jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
       attestations: write
       id-token: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
             fetch-depth: 0
       - name: Set up QEMU
@@ -33,13 +33,33 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Determine changed containers
         run: |
-          CHANGED_CONTAINERS=$(./gen_release_containers.sh)
-          echo CHANGED_CONTAINERS=$CHANGED_CONTAINERS | tee -a $GITHUB_ENV
+          CHANGED_CONTAINERS=$(./gen_release_containers.sh | paste -sd ' ' -)
+          printf 'CHANGED_CONTAINERS=%s\n' "$CHANGED_CONTAINERS" >> "$GITHUB_ENV"
       - name: Build and push image
         run: |
-          echo $CHANGED_CONTAINERS
-          for container in $CHANGED_CONTAINERS; do
-            ./$container/build.sh
+          read -ra containers <<< "$CHANGED_CONTAINERS"
+          for container in "${containers[@]}"; do
+            "./$container/build.sh"
           done
         env:
           CHANGED_CONTAINERS: ${{ env.CHANGED_CONTAINERS }}
+      - name: Publish release notes
+        if: env.CHANGED_CONTAINERS != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          current="$GITHUB_REF_NAME"
+          if gh release view "$current" >/dev/null 2>&1; then
+            exit 0
+          fi
+          previous=$(gh release list --limit 1 --json tagName --jq '.[0].tagName // ""')
+          range="$current"
+          if [ -n "$previous" ]; then
+            range="$previous..$current"
+          fi
+          {
+            printf '## Commits\n\n'
+            git log --pretty=format:'- %h %s' "$range"
+            printf '\n'
+          } > "$RUNNER_TEMP/release-notes.md"
+          gh release create "$current" --title "$current" --notes-file "$RUNNER_TEMP/release-notes.md"

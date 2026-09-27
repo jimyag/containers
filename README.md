@@ -2,6 +2,9 @@
 
 这个仓库维护几个可独立构建和发布的 Docker 镜像。每个目录包含自己的构建文件和使用说明。
 
+[![Check](https://github.com/jimyag/containers/actions/workflows/check.yaml/badge.svg)](https://github.com/jimyag/containers/actions/workflows/check.yaml)
+[![Release](https://github.com/jimyag/containers/actions/workflows/image.yaml/badge.svg)](https://github.com/jimyag/containers/actions/workflows/image.yaml)
+
 | 组件 | 用途 | 镜像 | 文档 |
 | --- | --- | --- | --- |
 | `ubuntu` | 带常用排障工具的 Ubuntu 22.04 基础镜像 | `ghcr.io/jimyag/ubuntu:22.04`、`ghcr.io/jimyag/ubuntu:latest` | [ubuntu/README.md](ubuntu/README.md) |
@@ -9,6 +12,10 @@
 | `openconnect` | OpenConnect VPN 和 gost SOCKS5 代理 | `ghcr.io/jimyag/openconnect:latest` | [openconnect/README.md](openconnect/README.md) |
 | `debug` | Kubernetes 临时调试工具箱 | `ghcr.io/jimyag/debug:latest` | [debug/README.md](debug/README.md) |
 
-## 构建和发布
+## 开发
 
-每个组件目录都有一个 `build.sh`。从仓库根目录执行对应脚本即可构建并推送镜像；镜像发布工作流由 Git tag push 触发，详见 [.github/workflows/image.yaml](.github/workflows/image.yaml)。
+CI 在每次提交和 PR 中构建四个镜像的 `linux/amd64` 版本，不推送镜像。
+
+## 发布
+
+每个组件目录都有一个 `build.sh`。从仓库根目录执行对应脚本即可构建并推送镜像；镜像发布工作流由 Git tag push 触发，详见 [.github/workflows/image.yaml](.github/workflows/image.yaml)。发布完成后，GitHub Release 列出相对上一个 release 新增的提交。
