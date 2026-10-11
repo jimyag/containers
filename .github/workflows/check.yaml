@@ -21,6 +21,6 @@ jobs:
       - uses: docker/setup-buildx-action@v4
       - name: Build images
         run: |
-          for dir in debug novnc openconnect ubuntu; do
+          for dir in debug novnc openconnect openvpn-gost ubuntu; do
             docker buildx build --platform linux/amd64 --file "$dir/Dockerfile" "$dir"
           done

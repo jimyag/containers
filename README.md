@@ -10,11 +10,12 @@
 | `ubuntu` | 带常用排障工具的 Ubuntu 22.04 基础镜像 | `ghcr.io/jimyag/ubuntu:22.04`、`ghcr.io/jimyag/ubuntu:latest` | [ubuntu/README.md](ubuntu/README.md) |
 | `novnc` | 通过浏览器访问 VNC 服务 | `ghcr.io/jimyag/novnc:latest` | [novnc/README.md](novnc/README.md) |
 | `openconnect` | OpenConnect VPN 和 gost SOCKS5 代理 | `ghcr.io/jimyag/openconnect:latest` | [openconnect/README.md](openconnect/README.md) |
+| `openvpn-gost` | Debian 上的 OpenVPN 和 GOST HTTP/SOCKS5 代理 | `ghcr.io/jimyag/openvpn-gost:2.7.8-gost3.3.0`、`latest` | [openvpn-gost/README.md](openvpn-gost/README.md) |
 | `debug` | Kubernetes 临时调试工具箱 | `ghcr.io/jimyag/debug:latest` | [debug/README.md](debug/README.md) |
 
 ## 开发
 
-CI 在每次提交和 PR 中构建四个镜像的 `linux/amd64` 版本，不推送镜像。
+CI 在每次提交和 PR 中构建五个镜像的 `linux/amd64` 版本，不推送镜像。
 
 ## 发布
 

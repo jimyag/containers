@@ -1,0 +1,19 @@
+services:
+  openvpn-gost:
+    image: ghcr.io/jimyag/openvpn-gost:2.7.8-gost3.3.0
+    restart: unless-stopped
+    init: true
+    cap_drop: [ALL]
+    cap_add: [NET_ADMIN]
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - "53200:53200"
+    dns:
+      - "${DNS_IP:?Set DNS_IP in .env}"
+    environment:
+      DNS_IP: "${DNS_IP}"
+      RETURN_ROUTES: "${RETURN_ROUTES:?Set the client and DNS network routes in .env}"
+      HEALTHCHECK_URL: "${HEALTHCHECK_URL:?Set the HTTPS health endpoint in .env}"
+    volumes:
+      - ./config:/config:ro
